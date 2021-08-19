@@ -27,8 +27,8 @@ Acts::MLTrackClassifier::TrackLabels Acts::MLTrackClassifier::predictTrackLabel(
   float outputProbability = outputTensor[0];
 
   // the output layer computes how confident the network is that the track is a
-  // duplicate, so need to convert that to a label
-  if (outputProbability > decisionThreshProb) {
+  // good track, so need to convert that to a label
+  if (outputProbability < decisionThreshProb) {
     return TrackLabels::eDuplicate;
   }
   return TrackLabels::eGood;
