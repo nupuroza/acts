@@ -296,9 +296,9 @@ int runRecCKFTracks(int argc, char* argv[],
   path currentFilePath(__FILE__);
   path parentPath = currentFilePath.parent_path();
   path demoModelPath =
-      canonical(parentPath / "MLAmbiguityResolutionDemo.onnx").native();
-  // Threshold probability for neural network to classify track as duplicate
-  double decisionThreshProb = 0.5;
+      canonical(parentPath / "NNforAmbiguityResolution.onnx").native();
+  // Threshold probability for neural network to classify track as duplicate based on Youden's J Statistic
+  double decisionThreshProb = 0.7;
   // Initialize OnnxRuntime plugin
   Ort::Env env(ORT_LOGGING_LEVEL_WARNING, "MLTrackClassifier");
   Acts::MLTrackClassifier neuralNetworkClassifier(env, demoModelPath.c_str());
