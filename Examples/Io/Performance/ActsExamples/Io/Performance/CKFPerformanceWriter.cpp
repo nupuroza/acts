@@ -100,7 +100,7 @@ ActsExamples::ProcessCode ActsExamples::CKFPerformanceWriter::writeT(
   std::lock_guard<std::mutex> lock(m_writeMutex);
 
   // Vector of input features for neural network classification
-  std::vector<float> inputFeatures(3);
+  std::vector<float> inputFeatures(6);
 
   // Loop over all trajectories
   for (size_t itraj = 0; itraj < trajectories.size(); ++itraj) {
@@ -181,7 +181,10 @@ ActsExamples::ProcessCode ActsExamples::CKFPerformanceWriter::writeT(
       if (m_cfg.duplicatedPredictor && !isFake) {
         inputFeatures[0] = trajState.nMeasurements;
         inputFeatures[1] = trajState.nOutliers;
-        inputFeatures[2] = trajState.chi2Sum * 1.0 / trajState.NDF;
+	 inputFeatures[2] = trajState.nSharedHits;
+        inputFeatures[3] = trajState.chi2Sum * 1.0 / trajState.NDF;
+	 inputFeatures[4] = Acts::VectorHelpers::perp(fittedParameters.momentum());
+	 inputFeatures[5] = Acts::VectorHelpers::eta(fittedParameters.momentum());
         // predict if current trajectory is 'duplicate'
         bool isDuplicated = m_cfg.duplicatedPredictor(inputFeatures);
         // Fill the duplication rate
